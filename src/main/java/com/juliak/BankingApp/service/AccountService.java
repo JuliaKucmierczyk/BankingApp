@@ -30,6 +30,10 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
+    public Account getAccountById(Long id) {
+        return accountRepository.findById(id).orElse(null);
+    }
+
     // Method to deposit money into an account
     public Account deposit(Long accountId, BigDecimal amount) {
         Account account = accountRepository.findById(accountId)
@@ -73,10 +77,7 @@ public class AccountService {
         return accountRepository.findAll();
     }
 
-    // Method to fetch an account by ID
-    public Optional<Account> getAccountById(Long id) {
-        return accountRepository.findById(id);
-    }
+
 
     // Method to create a new account
     public Account createNewAccount(Account account) {

@@ -20,6 +20,13 @@ public class Account {
     @Column(nullable = false)
     private BigDecimal balance;
 
+
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+
     // Constructors
     public Account() {
     }

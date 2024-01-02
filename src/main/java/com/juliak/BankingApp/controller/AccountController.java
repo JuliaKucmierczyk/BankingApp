@@ -30,6 +30,18 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
+    // Get details for a specific account
+    @GetMapping("/{id}")
+    public ResponseEntity<Account> getAccount(@PathVariable Long id) {
+        Account account = accountService.getAccountById(id);
+        if (account != null) {
+            return ResponseEntity.ok(account);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
     // Get all accounts
     @GetMapping("/")
     public ResponseEntity<List<Account>> getAllAccounts() {
