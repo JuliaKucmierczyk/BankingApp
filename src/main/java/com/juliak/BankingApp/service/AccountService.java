@@ -77,4 +77,16 @@ public class AccountService {
     public Optional<Account> getAccountById(Long id) {
         return accountRepository.findById(id);
     }
+
+    // Method to create a new account
+    public Account createNewAccount(Account account) {
+        // You might want to add additional logic here to initialize or validate the account
+        return accountRepository.save(account);
+    }
+
+    // Method to delete an account by ID
+    public void deleteAccount(Long accountId) {
+        // Before deleting, you might want to add checks, e.g., ensure the account exists
+        accountRepository.deleteById(accountId);
+    }
 }

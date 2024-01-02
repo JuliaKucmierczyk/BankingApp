@@ -88,4 +88,24 @@ public class AccountServiceTest {
         assertEquals(new BigDecimal("1500"), account.getBalance());
     }
 
+    @Test
+    void testCreateNewAccount() {
+        Account newAccount = new Account("654321", "New User", new BigDecimal("500"));
+        when(accountRepository.save(any(Account.class))).thenReturn(newAccount);
+
+        Account createdAccount = accountService.createNewAccount(newAccount);
+        assertNotNull(createdAccount);
+        assertEquals("New User", createdAccount.getAccountHolderName());
+        // Add more assertions as necessary
+    }
+
+    @Test
+    void testDeleteAccount() {
+        Long accountId = 1L; // Assume this is a valid account ID
+        doNothing().when(accountRepository).deleteById(anyLong());
+
+        accountService.deleteAccount(accountId);
+        verify(accountRepository).deleteById(accountId);
+        // You might not have a return value to assert on for delete, but you can verify the interaction
+    }
 }
