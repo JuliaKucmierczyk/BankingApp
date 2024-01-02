@@ -23,6 +23,4 @@ public class TransactionService {
         // Implement logic to fetch transactions based on account ID
         return null; // Replace with actual implementation
     }
-
-    // Additional methods can be added here
 }
