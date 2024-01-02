@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
+    // That's not dynamic
     fetchUser(1);
 });
 
@@ -38,53 +39,41 @@ function fetchAccountDetails(accountId) {
             document.getElementById('balance').textContent = account.balance;
             document.getElementById('accountNumber').textContent = account.accountNumber;
 
-            // Attach the accountId to both transaction forms for later use
             document.getElementById('depositForm').setAttribute('data-account-id', accountId);
             document.getElementById('withdrawalForm').setAttribute('data-account-id', accountId);
         })
         .catch(error => console.error('Error fetching account details:', error));
 }
 
-function submitTransaction(accountId, amount, type) {
-    const transactionData = {
-        amount: amount,
-        type: type
-    };
+function submitTransaction(formId, transactionType) {
+    const form = document.getElementById(formId);
+    const accountId = form.getAttribute('data-account-id');
+    const amount = form.amount.value; // Using form's name attribute for amount
 
-    fetch(`/api/accounts/${accountId}/transactions`, {
+    fetch(`/api/accounts/${accountId}/${transactionType}?amount=${amount}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(transactionData),
     })
-    .then(response => {
-        if(response.ok) {
-            return response.json();
-        } else {
-            throw new Error('Transaction failed');
-        }
-    })
+    .then(response => response.ok ? response.json() : Promise.reject(`${transactionType} failed`))
     .then(data => {
-        console.log("Transaction successful:", data);
-        // Refresh balance or transaction history as needed
-        fetchAccountDetails(accountId); // Refresh account details
+        console.log(`${transactionType} successful:`, data);
+        fetchAccountDetails(accountId);
     })
-    .catch(error => console.error('Error submitting transaction:', error));
+    .catch(error => {
+        console.error(`Error during ${transactionType}:`, error);
+    });
 }
 
 document.getElementById('depositForm').addEventListener('submit', function(event) {
     event.preventDefault();
-    const form = event.target;
-    const accountId = form.getAttribute('data-account-id');
-    const amount = document.getElementById('depositAmount').value;
-    submitTransaction(accountId, amount, 'DEPOSIT');
+    submitTransaction('depositForm', 'deposit');
 });
 
 document.getElementById('withdrawalForm').addEventListener('submit', function(event) {
     event.preventDefault();
-    const form = event.target;
-    const accountId = form.getAttribute('data-account-id');
-    const amount = document.getElementById('withdrawalAmount').value;
-    submitTransaction(accountId, amount, 'WITHDRAWAL');
+    submitTransaction('withdrawalForm', 'withdraw');
 });
+
+// STILL GETTING 403

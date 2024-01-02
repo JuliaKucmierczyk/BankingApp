@@ -44,5 +44,45 @@ public class Transaction {
         this.timestamp = timestamp;
     }
 
-    // ... include getters and setters for all fields
+    // Getters
+    public Long getId() {
+        return this.id;
+    }
+
+    public Account getAccount() {
+        return this.account;
+    }
+
+    public BigDecimal getAmount() {
+        return this.amount;
+    }
+
+    public TransactionType getType() {
+        return this.type;
+    }
+
+    public Date getTimestamp() {
+        return this.timestamp;
+    }
+
+    // Setters
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public void setType(TransactionType type) {
+        this.type = type;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
 }
