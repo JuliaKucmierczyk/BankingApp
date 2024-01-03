@@ -19,8 +19,7 @@ public class TransactionService {
     }
 
     // Method to fetch all transactions for an account
-    public List<Transaction> getAllTransactionsForAccount(Long accountId) {
-        // Implement logic to fetch transactions based on account ID
-        return null; // Replace with actual implementation
+    public List<Transaction> getTransactionsForAccount(Long accountId) {
+        return transactionRepository.findByAccountId(accountId);
     }
 }

@@ -13,11 +13,6 @@ public class UserService {
 
     // Register a new user
     public User registerUser(User user) {
-        // You can perform validation and additional logic here
-        // For example, you can hash the user's password before saving it
-        // Ensure that the username is unique and other business rules
-
-        // Save the user to the database
         return userRepository.save(user);
     }
 

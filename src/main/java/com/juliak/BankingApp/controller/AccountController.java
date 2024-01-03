@@ -1,7 +1,9 @@
 package com.juliak.BankingApp.controller;
 
 import com.juliak.BankingApp.model.Account;
+import com.juliak.BankingApp.model.Transaction;
 import com.juliak.BankingApp.service.AccountService;
+import com.juliak.BankingApp.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,9 @@ public class AccountController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private TransactionService transactionService;
 
     // Create a new account
     @PostMapping("/")
@@ -69,5 +74,12 @@ public class AccountController {
         BigDecimal balance = accountService.checkBalance(id);
         return ResponseEntity.ok(balance);
     }
+
+    @GetMapping("/{id}/transactions")
+    public ResponseEntity<List<Transaction>> getTransactionsForAccount(@PathVariable Long id) {
+        List<Transaction> transactions = transactionService.getTransactionsForAccount(id); // Use the injected instance
+        return ResponseEntity.ok(transactions);
+    }
+
 
 }

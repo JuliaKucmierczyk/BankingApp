@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    // Endpoints for login, registration, etc.
-    // ...
+    // Endpoints for login, registration, IN FUTURE
 
 }

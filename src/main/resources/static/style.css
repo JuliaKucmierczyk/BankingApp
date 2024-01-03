@@ -5,7 +5,7 @@ body {
     padding: 20px;
 }
 
-#userDetails, #transactions, #transactionForm {
+.userDetails, .transactions, #transactionForm {
     background-color: white;
     padding: 20px;
     margin-bottom: 20px;

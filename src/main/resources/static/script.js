@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // That's not dynamic
+    // That's not dynamic we are just checking data for existing User 1
     fetchUser(1);
 });
 
@@ -41,6 +41,7 @@ function fetchAccountDetails(accountId) {
 
             document.getElementById('depositForm').setAttribute('data-account-id', accountId);
             document.getElementById('withdrawalForm').setAttribute('data-account-id', accountId);
+            fetchTransactions(accountId);
         })
         .catch(error => console.error('Error fetching account details:', error));
 }
@@ -49,6 +50,8 @@ function submitTransaction(formId, transactionType) {
     const form = document.getElementById(formId);
     const accountId = form.getAttribute('data-account-id');
     const amount = form.amount.value; // Using form's name attribute for amount
+    console.log("Amount: "+amount);
+
 
     fetch(`/api/accounts/${accountId}/${transactionType}?amount=${amount}`, {
         method: 'POST',
@@ -76,4 +79,26 @@ document.getElementById('withdrawalForm').addEventListener('submit', function(ev
     submitTransaction('withdrawalForm', 'withdraw');
 });
 
-// STILL GETTING 403
+function fetchTransactions(accountId) {
+    fetch(`/api/accounts/${accountId}/transactions`)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to load transactions');
+            }
+        })
+        .then(transactions => {
+            // Assuming you have an element with id 'transactionList' to display the list
+            const transactionList = document.getElementById('transactionList');
+            transactionList.innerHTML = ''; // Clear previous transactions
+
+            // Iterate through the transactions and create list items
+            transactions.forEach(transaction => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${transaction.type} - ${transaction.amount} - ${transaction.timestamp}`;
+                transactionList.appendChild(listItem);
+            });
+        })
+        .catch(error => console.error('Error fetching transactions:', error));
+}
