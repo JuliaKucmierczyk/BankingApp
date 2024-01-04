@@ -6,6 +6,7 @@ import com.juliak.BankingApp.model.User;
 import com.juliak.BankingApp.repository.AccountRepository;
 import com.juliak.BankingApp.repository.TransactionRepository;
 import com.juliak.BankingApp.repository.UserRepository;
+import com.juliak.BankingApp.service.AccountService;
 import com.juliak.BankingApp.service.TransactionService;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.CommandLineRunner;
@@ -22,6 +23,7 @@ public class DataInitializerConfig {
     @Bean
     CommandLineRunner initDatabase(UserRepository userRepository,
                                    AccountRepository accountRepository,
+                                   AccountService accountService,
                                    TransactionService transactionService,
                                    PasswordEncoder passwordEncoder) {
         return args -> {
@@ -33,12 +35,11 @@ public class DataInitializerConfig {
             Account account = new Account("1234567890", "Julia's Account", new BigDecimal("1000.00"));
             account = accountRepository.save(account);
 
-            Transaction depositTransaction = new Transaction(account, new BigDecimal("500.00"), Transaction.TransactionType.DEPOSIT, new Date());
-            Transaction withdrawalTransaction = new Transaction(account, new BigDecimal("200.00"), Transaction.TransactionType.WITHDRAWAL, new Date());
 
-            // Transactions just for presentation
-            transactionService.createTransaction(withdrawalTransaction);
-            transactionService.createTransaction(depositTransaction);
+            // Withdrawing
+            account = accountService.withdraw(user.getId(), new BigDecimal("200.00"));
+            // Deposit
+            account = accountService.deposit(user.getId(), new BigDecimal("500.00"));
 
 
             // Print out the created user and account

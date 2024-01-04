@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/accounts")
 public class AccountController {
@@ -55,14 +56,15 @@ public class AccountController {
     }
 
     // Deposit money
-    @PostMapping("/{id}/deposit")
+
+    @GetMapping("/{id}/deposit")
     public ResponseEntity<Account> deposit(@PathVariable Long id, @RequestParam BigDecimal amount) {
         Account account = accountService.deposit(id, amount);
         return ResponseEntity.ok(account);
     }
 
     // Withdraw money
-    @PostMapping("/{id}/withdraw")
+    @GetMapping("/{id}/withdraw")
     public ResponseEntity<Account> withdraw(@PathVariable Long id, @RequestParam BigDecimal amount) {
         Account account = accountService.withdraw(id, amount);
         return ResponseEntity.ok(account);

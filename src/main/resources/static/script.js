@@ -15,7 +15,6 @@ function fetchUser(userId) {
         .then(user => {
                     // Assuming the user object has an accounts field
                     const accountId = user.id;
-                    console.log("Account ID:" + accountId);
 
                     // Update the username display
                     document.getElementById('username').textContent = user.username;
@@ -45,16 +44,23 @@ function fetchAccountDetails(accountId) {
         })
         .catch(error => console.error('Error fetching account details:', error));
 }
+document.getElementById('depositForm').addEventListener('submit', function(event) {
+     event.preventDefault();
+     submitTransaction('depositForm', 'deposit');
+ });
+
+ document.getElementById('withdrawalForm').addEventListener('submit', function(event) {
+     event.preventDefault();
+     submitTransaction('withdrawalForm', 'withdraw');
+ });
 
 function submitTransaction(formId, transactionType) {
     const form = document.getElementById(formId);
     const accountId = form.getAttribute('data-account-id');
     const amount = form.amount.value; // Using form's name attribute for amount
-    console.log("Amount: "+amount);
-
 
     fetch(`/api/accounts/${accountId}/${transactionType}?amount=${amount}`, {
-        method: 'POST',
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -69,15 +75,8 @@ function submitTransaction(formId, transactionType) {
     });
 }
 
-document.getElementById('depositForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    submitTransaction('depositForm', 'deposit');
-});
 
-document.getElementById('withdrawalForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    submitTransaction('withdrawalForm', 'withdraw');
-});
+
 
 function fetchTransactions(accountId) {
     fetch(`/api/accounts/${accountId}/transactions`)

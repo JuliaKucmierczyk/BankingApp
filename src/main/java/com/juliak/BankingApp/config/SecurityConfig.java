@@ -1,10 +1,10 @@
 package com.juliak.BankingApp.config;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -22,18 +22,20 @@ public class SecurityConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") // or more specific path patterns
-                        .allowedOrigins("http://example.com") // the origin of your client-side application
-                        .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE"); // allowed methods
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:8080")
+                        .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE");
             }
         };
     }
 
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain web(HttpSecurity http) throws Exception  {
         http
-                .authorizeRequests(authorize -> authorize
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/admin/**").hasRole("ADMIN") // only accessible by users with the ADMIN role
+                        .requestMatchers("/public/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(withDefaults())
@@ -44,7 +46,7 @@ public class SecurityConfig {
                 .inMemoryAuthentication()
                 .withUser("julia")
                 .password(passwordEncoder().encode("test123"))
-                .roles("USER");
+                .roles("ADMIN");
 
         return http.build();
     }
