@@ -41,12 +41,6 @@ public class SecurityConfig {
                 .formLogin(withDefaults())
                 .httpBasic(withDefaults());
 
-        // My own credentials
-        http.getSharedObject(AuthenticationManagerBuilder.class)
-                .inMemoryAuthentication()
-                .withUser("julia")
-                .password(passwordEncoder().encode("test123"))
-                .roles("ADMIN");
 
         return http.build();
     }
