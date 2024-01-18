@@ -27,12 +27,10 @@ public class DataInitializerConfig {
                                    PasswordEncoder passwordEncoder) {
         return args -> {
 //            // Create a new user
-//            User user = new User("bartek", passwordEncoder.encode("test123"));
+
+//            User user = new User("John", passwordEncoder.encode("test123"));
+//            user.createAccount("0938127462", "John", new BigDecimal("2000.00"));
 //            user = userRepository.save(user);
-//
-//            // Create a new account for the user with some initial balance
-//            Account account = new Account("1234567890", "Julia's Account", new BigDecimal("1000.00"));
-//            account = accountRepository.save(account);
 //
 //
 //            // Withdrawing

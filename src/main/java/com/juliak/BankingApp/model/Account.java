@@ -1,5 +1,6 @@
 package com.juliak.BankingApp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
@@ -9,6 +10,7 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id", nullable = false, updatable = false, unique = true)
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -23,7 +25,9 @@ public class Account {
 
 
     @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
 
@@ -44,6 +48,9 @@ public class Account {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getAccountNumber() {

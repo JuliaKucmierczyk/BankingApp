@@ -1,7 +1,9 @@
 package com.juliak.BankingApp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 @Entity
@@ -18,6 +20,10 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @PrimaryKeyJoinColumn
+    @JsonIgnore
+    private Account account;
 
     // Constructors
     public User() {
@@ -26,6 +32,8 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        this.account = new Account(); // Create a new account when creating a user
+        this.account.setUser(this); // Set the user for the created account
     }
 
     // Getters and Setters
@@ -51,6 +59,11 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    public void createAccount(String accountNumber, String accountHolderName, BigDecimal balance) {
+        this.account.setAccountNumber(accountNumber);
+        this.account.setAccountHolderName(accountHolderName);
+        this.account.setBalance(balance);
     }
 
 }

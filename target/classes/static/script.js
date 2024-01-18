@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     // That's not dynamic we are just checking data for existing User 1
-    fetchUser(1);
+    fetchUser(9);
 });
 
 function fetchUser(userId) {
